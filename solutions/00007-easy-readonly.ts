@@ -31,14 +31,16 @@
 
 /* _____________ Your Code Here _____________ */
 
-type MyReadonly<T> = any
+type MyReadonly<T extends object> = {
+  readonly [Prop in keyof T]: T[Prop]
+}
+
+type c = MyReadonly<Todo1>
 
 /* _____________ Test Cases _____________ */
-import type { Equal, Expect } from '@type-challenges/utils'
+import type { Equal, Expect } from "@type-challenges/utils"
 
-type cases = [
-  Expect<Equal<MyReadonly<Todo1>, Readonly<Todo1>>>,
-]
+type cases = [Expect<Equal<MyReadonly<Todo1>, Readonly<Todo1>>>]
 
 interface Todo1 {
   title: string
