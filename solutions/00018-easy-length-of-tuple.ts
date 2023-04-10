@@ -22,17 +22,30 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Length<T> = any
+type Length<T> = T extends { length: number } ? T['length'] : never
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
 const tesla = ['tesla', 'model 3', 'model X', 'model Y'] as const
-const spaceX = ['FALCON 9', 'FALCON HEAVY', 'DRAGON', 'STARSHIP', 'HUMAN SPACEFLIGHT'] as const
+const teslaTwo = ['tesla', 'model 3', 'model X', 'model Y']
+const spaceX = [
+  'FALCON 9',
+  'FALCON HEAVY',
+  'DRAGON',
+  'STARSHIP',
+  'HUMAN SPACEFLIGHT',
+] as const
+
+type a = Length<'hello world'>
+
+type c = Length<typeof spaceX>
+type d = Length<typeof teslaTwo>
 
 type cases = [
   Expect<Equal<Length<typeof tesla>, 4>>,
   Expect<Equal<Length<typeof spaceX>, 5>>,
+  // Expect<Equal<Length<typeof teslaTwo>, 4>>,
   // @ts-expect-error
   Length<5>,
   // @ts-expect-error
