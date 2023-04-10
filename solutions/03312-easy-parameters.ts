@@ -20,7 +20,11 @@
 
 /* _____________ Your Code Here _____________ */
 
-type MyParameters<T extends (...args: any[]) => any> = any
+type MyParameters<T> = T extends ((...args: infer Args) => any) ? Args : never
+
+const boo = (arg1: string, arg2: number): void => {}
+
+type FunctionParamsType = MyParameters<typeof boo> // [arg1: string, arg2: number]
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
