@@ -22,7 +22,7 @@
 
 /* _____________ Your Code Here _____________ */
 
-type MyAwaited<T> = any
+type MyAwaited<T> = T extends Promise<infer A> ? MyAwaited<A> : T
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
@@ -31,7 +31,10 @@ type X = Promise<string>
 type Y = Promise<{ field: number }>
 type Z = Promise<Promise<string | number>>
 type Z1 = Promise<Promise<Promise<string | boolean>>>
-type T = { then: (onfulfilled: (arg: number) => any) => any }
+type T = { then: (onfulfilled: (arg: number) => any) => any } // is iths a promise though
+
+type a = MyAwaited<T>
+type b = MyAwaited<Promise<Promise<Promise<string | boolean>>>>
 
 type cases = [
   Expect<Equal<MyAwaited<X>, string>>,
