@@ -18,7 +18,9 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Push<T, U> = any
+type Push<T extends unknown[], U> = [...T, U]
+
+type Result = Push<[1, 2], '3'>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
