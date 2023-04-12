@@ -30,18 +30,9 @@
 
 /* _____________ Your Code Here _____________ */
 
-type MyOmit<T, K> = any
-
-/* _____________ Test Cases _____________ */
-import type { Equal, Expect } from '@type-challenges/utils'
-
-type cases = [
-  Expect<Equal<Expected1, MyOmit<Todo, 'description'>>>,
-  Expect<Equal<Expected2, MyOmit<Todo, 'description' | 'completed'>>>,
-]
-
-// @ts-expect-error
-type error = MyOmit<Todo, 'description' | 'invalid'>
+type MyOmit<T extends object, K extends keyof T> = {
+  [Prop in keyof T as Prop extends K ? never : Prop]: T[Prop]
+}
 
 interface Todo {
   title: string
@@ -57,6 +48,18 @@ interface Expected1 {
 interface Expected2 {
   title: string
 }
+
+// @ts-expect-error
+type error = MyOmit<Todo, 'description' | 'invalid'>
+type a = MyOmit<Todo, 'description'>
+
+/* _____________ Test Cases _____________ */
+import type { Equal, Expect } from '@type-challenges/utils'
+
+type cases = [
+  Expect<Equal<Expected1, MyOmit<Todo, 'description'>>>,
+  Expect<Equal<Expected2, MyOmit<Todo, 'description' | 'completed'>>>,
+]
 
 /* _____________ Further Steps _____________ */
 /*
