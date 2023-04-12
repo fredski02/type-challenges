@@ -20,7 +20,13 @@
 
 /* _____________ Your Code Here _____________ */
 
-type TupleToUnion<T> = any
+type TupleToUnion<T> = T extends [infer A, ...infer C] ? A | TupleToUnion<C> : never // my original
+// could also do
+type TupleToUnionB<T> = T extends Array<infer Arr> ? Arr : never // my better
+type TupleToUnionC<T extends any[]> = T[number]
+type Arr = ['1', '2', '3']
+
+type Test = TupleToUnionB<Arr> // expected to be '1' | '2' | '3'
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
