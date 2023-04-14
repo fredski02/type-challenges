@@ -39,9 +39,26 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Chainable = {
-  option(key: string, value: any): any
-  get(): any
+type Chainable<Config extends Record<string, any> = {}> = {
+  option<TKey extends string, TVal>(key: TKey, value: TVal): Chainable<Omit<Config, TKey> & Record<TKey, TVal>>
+  get(): Config
+}
+
+declare const config: Chainable
+
+const result = config
+  .option('foo', 123)
+  .option('name', 'type-challenges')
+  .option('bar', { value: 'Hello World' })
+  .get()
+
+// expect the type of result to be:
+interface Result {
+  foo: number
+  name: string
+  bar: {
+    value: string
+  }
 }
 
 /* _____________ Test Cases _____________ */
