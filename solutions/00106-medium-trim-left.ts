@@ -17,8 +17,13 @@
 */
 
 /* _____________ Your Code Here _____________ */
+// i accidently did trim instead of trimLeft haha, woops. But, still Its nice to know I can achieve it recursively by pattern matching a space either side. I will suggest it as a hard challenge maybe.
+type Trim<S extends string> = S extends `${' '}${infer Content}` | `${infer Content}${' '}`
+  ? Trim<Content> : S
 
-type TrimLeft<S extends string> = any
+type TrimLeft<S extends string> = S extends `${' ' | '\n\t'}${infer Content}` ? TrimLeft<Content> : S
+
+type trimed = TrimLeft<'   \n\t foo bar '> // expected to be 'Hello World  '
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
