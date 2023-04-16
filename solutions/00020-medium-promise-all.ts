@@ -23,7 +23,30 @@
 
 /* _____________ Your Code Here _____________ */
 
-declare function PromiseAll(values: any): any
+declare function PromiseAll<T extends any[]>(
+  values: readonly [...T]
+): Promise<{
+  [P in keyof T]: Awaited<T[P]>
+}> // not my solution here but I did learn something here. when defining an object's index, if you indirect specify mumbers
+// like in the case when iterating over an array ( e.g P in keyof T where P is a number) you actually create an array despite the object
+// literal that surrounds the initialisation.
+
+type d = [1, 'c', {}]
+
+type e<T> = {
+  [P in keyof T]: T[P]
+}
+
+type f = e<d>
+
+const promise1 = Promise.resolve(3)
+const promise2 = 42
+const promise3 = new Promise<string>((resolve, reject) => {
+  setTimeout(resolve, 100, 'foo')
+})
+
+// expected to be `Promise<[number, 42, string]>`
+const p = PromiseAll([promise1, promise2, promise3] as const)
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
@@ -32,6 +55,8 @@ const promiseAllTest1 = PromiseAll([1, 2, 3] as const)
 const promiseAllTest2 = PromiseAll([1, 2, Promise.resolve(3)] as const)
 const promiseAllTest3 = PromiseAll([1, 2, Promise.resolve(3)])
 const promiseAllTest4 = PromiseAll<Array<number | Promise<number>>>([1, 2, 3])
+
+type c = typeof promiseAllTest1
 
 type cases = [
   Expect<Equal<typeof promiseAllTest1, Promise<[1, 2, 3]>>>,
