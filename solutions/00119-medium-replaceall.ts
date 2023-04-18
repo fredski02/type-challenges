@@ -25,7 +25,7 @@ type ReplaceAll<
 > = From extends ''
   ? S
   : S extends `${infer Pre}${From}${infer Post}`
-    ? `${Pre}${To}${ReplaceAll<`${Post}`, From, To>}`
+    ? `${Pre}${To}${ReplaceAll<Post, From, To>}`
     : S
 
 type replaced = ReplaceAll<'foboorfoboar', 'bo', 'b'> // expected to be 'types'
