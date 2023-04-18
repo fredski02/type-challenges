@@ -23,7 +23,12 @@
 
 /* _____________ Your Code Here _____________ */
 
-type AppendArgument<Fn, A> = any
+type AppendArgument<Fn extends (...args: any[]) => unknown, A> = Fn extends (...args: infer Args) => infer R ? ((...args: [...Args, A]) => R) : never
+
+type Fn = (a: number, b: string) => number
+
+type Result = AppendArgument<Fn, boolean>
+// expected be (a: number, b: string, x: boolean) => number
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
