@@ -16,7 +16,14 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Permutation<T> = any
+type Permutation<T, K=T> =
+    [T] extends [never]
+      ? []
+      : K extends K
+        ? [K, ...Permutation<Exclude<T, K>>]
+        : never
+
+type perm = Permutation<'A' | 'B' | 'C'> // ['A', 'B', 'C'] | ['A', 'C', 'B'] | ['B', 'A', 'C'] | ['B', 'C', 'A'] | ['C', 'A', 'B'] | ['C', 'B', 'A']
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
@@ -28,6 +35,8 @@ type cases = [
   Expect<Equal<Permutation<boolean>, [false, true] | [true, false]>>,
   Expect<Equal<Permutation<never>, []>>,
 ]
+
+
 
 /* _____________ Further Steps _____________ */
 /*
