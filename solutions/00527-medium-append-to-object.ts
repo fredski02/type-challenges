@@ -19,7 +19,15 @@
 
 /* _____________ Your Code Here _____________ */
 
-type AppendToObject<T, U, V> = any
+type AppendToObject<T, U extends string, V> = {
+  [Prop in keyof T | U]: Prop extends keyof T ? T[Prop] : V
+}
+
+type Test = {
+  key: 'cat'
+  value: 'green'
+}
+type Result = AppendToObject<Test, 'value', 4> // expected to be { id: '1', value: 4 }
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
