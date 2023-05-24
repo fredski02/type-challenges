@@ -22,9 +22,32 @@
   > View on GitHub: https://tsch.js.org/612
 */
 
+// remember - uncapitalize only uncaptializes the first char
 /* _____________ Your Code Here _____________ */
+type KebabCase<S> = S extends `${infer First}${infer Rest}`
+  ? Rest extends Uncapitalize<Rest>
+    ? `${Uncapitalize<First>}${KebabCase<Rest>}`
+    : `${Uncapitalize<First>}-${KebabCase<Rest>}`
+  : S
 
-type KebabCase<S> = any
+// first pass
+// does ooBarBaz extend ooBarBaz ?
+// 1st sub statement : ${f}${ooBarBaz}
+
+// 2nd pass
+// does oBarBaz extend oBarBaz ?
+// 1st sub statement : 1${f} ${o}{oBarBaz}
+
+// third pass
+// does BarBaz extend barBaz ?
+// 2nd sub statement : 1${f} 2${o} 3${o} 3${-} {BarBaz}
+
+type FooBarBaz = KebabCase<'FooBarBaz'>
+
+const foobarbaz: FooBarBaz = 'foo-bar-baz'
+
+type DoNothing = KebabCase<'do-nothing'>
+const doNothing: DoNothing = 'do-nothing'
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
