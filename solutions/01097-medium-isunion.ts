@@ -20,12 +20,22 @@
 
 /* _____________ Your Code Here _____________ */
 
-type IsUnion<T, B = T> = [T] extends [never] ? false : T extends B ? [B] extends [T] ? false : true : never
+type IsUnion<T, B = T> = [T] extends [never]
+  ? false
+  : T extends B
+    ? [B] extends [T]
+        ? false
+        : true
+    : never
 
 type case1 = IsUnion<string> // false
 type case2 = IsUnion<string | number> // true
 type case3 = IsUnion<[string | number]> // false
+type a = never
+type b = never
+type c = [a] extends [b] ? true : false
 
+const lol: a = ['a'] // key insight here is that [union] is a tuple with one element of the union so only of length 1
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
