@@ -19,8 +19,11 @@
 
 /* _____________ Your Code Here _____________ */
 
-type AnyOf<T extends readonly any[]> = any
+type AnyOf<T extends any[]> = T[number] extends 0 | '' | undefined | null | { [x: string | number]: never } | false | [] ? false : true
 
+type a = 1 extends {} ? true : false
+type Sample1 = AnyOf<[1, '', false, [], {}]> // expected to be true.
+type Sample2 = AnyOf<[0, '', false, [], {}]> // expected to be false.
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
