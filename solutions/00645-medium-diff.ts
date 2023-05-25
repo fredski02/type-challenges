@@ -12,7 +12,13 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Diff<O, O1> = any
+type Diff<A extends object, B extends object> = {
+  [Prop in Exclude<keyof (A & B), keyof(A | B)>]: (A & B)[Prop]
+}
+
+type a = Diff<Foo, Bar>
+type b = Exclude<keyof (Foo & Bar), keyof (Foo | Bar)>
+type c = Exclude<'a' | 'b' | 'c', 'a' | 'b'>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
