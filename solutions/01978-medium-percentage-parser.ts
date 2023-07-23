@@ -32,8 +32,18 @@
 
 /* _____________ Your Code Here _____________ */
 
-type PercentageParser<A extends string> = any
+// type PercentageParser<A extends `${infer Sign extends '+' | '-'}${infer Num extends number}${infer Percent extends '%'}` > = [Sign, Num,Percent]
 
+type CheckSign<T> = T extends '+' | '-' ? T : never
+type CheckPercentage<T> = T extends `${infer P}%` ? [P, '%'] : [T, '']
+type PercentageParser<A extends string> =
+  A extends `${CheckSign<infer Sign>}${infer R}`
+    ?
+      [Sign, ...CheckPercentage<R>]
+    :
+      ['', ...CheckPercentage<A>]
+
+type Testy1 = PercentageParser<'+100%'>
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
