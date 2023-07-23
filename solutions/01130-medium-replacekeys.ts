@@ -49,7 +49,7 @@ type ReplaceKeys<TNodes, TKey, TProp> = {
     : TNodes[K]
 }
 
-type ReplacedNotExistKeys = ReplaceKeys<Nodes, 'name', { aa: number }> // {type: 'A', name: never, flag: number} | NodeB | {type: 'C', name: never, flag: number} // would replace name to never
+type ReplacedNotExistKeys = ReplaceKeys<Nodes, 'name', { name: number }> // {type: 'A', name: never, flag: number} | NodeB | {type: 'C', name: never, flag: number} // would replace name to never
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
