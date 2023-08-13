@@ -25,8 +25,27 @@
 */
 
 /* _____________ Your Code Here _____________ */
+type PropMap<T> = {
+  [Prop in keyof T]: T[Prop]
+}
 
-type PartialByKeys<T, K> = any
+type PartialByKeys<T, K = any> =
+  PropMap<{
+    [Prop in keyof T as Prop extends K ? Prop : never]?: T[Prop]
+  } & {
+      [Prop in Exclude<keyof T, K>]: T[Prop]
+    }>
+
+
+
+
+interface User {
+  name: string
+  age: number
+  address: string
+}
+
+type A = PartialByKeys<User, Partial<User>> // { name?:string; age:number; address:string }
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
