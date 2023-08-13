@@ -23,17 +23,21 @@
 
 /* _____________ Your Code Here _____________ */
 
-type StartsWith<T extends string, U extends string> = T['length'] extends 0 
-  ? false
-  : T extends `${infer TL}${infer TR}` 
-    ? U extends `${infer UL}${infer UR}`
-      ? TL extends UL 
-        ? StartsWith<TR, UR>
-        : false
-      : true
-    : T extends U
-      ? true
-      : false
+// initially attempt
+// type StartsWith<T extends string, U extends string> = T['length'] extends 0 
+//   ? false
+//   : T extends `${infer TL}${infer TR}` 
+//     ? U extends `${infer UL}${infer UR}`
+//       ? TL extends UL 
+//         ? StartsWith<TR, UR>
+//         : false
+//       : true
+//     : T extends U
+//       ? true
+//       : false
+
+// take advantage of the fact we can match any string in the extend
+type StartsWith<T extends string, U extends string> = T extends `${U}${string}` ? true : false
 
 
 type a = StartsWith<'', 'd'> // expected to be false
