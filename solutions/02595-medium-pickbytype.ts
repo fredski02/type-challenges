@@ -22,8 +22,11 @@
 */
 
 /* _____________ Your Code Here _____________ */
-
-type PickByType<T, U> = any
+// too easy bro
+type PickByType<T, U> = {
+  [Prop in keyof T as T[Prop] extends U ? Prop : never] : T[Prop]
+}
+type a = PickByType<Model, boolean>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
