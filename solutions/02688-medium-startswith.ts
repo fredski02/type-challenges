@@ -17,10 +17,28 @@
 
   > View on GitHub: https://tsch.js.org/2688
 */
+// get length of 2nd Str
+// get substring of 1st using the length of 2nd str
+// check if they match using extend
 
 /* _____________ Your Code Here _____________ */
 
-type StartsWith<T extends string, U extends string> = any
+type StartsWith<T extends string, U extends string> = T['length'] extends 0 
+  ? false
+  : T extends `${infer TL}${infer TR}` 
+    ? U extends `${infer UL}${infer UR}`
+      ? TL extends UL 
+        ? StartsWith<TR, UR>
+        : false
+      : true
+    : T extends U
+      ? true
+      : false
+
+
+type a = StartsWith<'', 'd'> // expected to be false
+type b = StartsWith<'abc', 'abc'> // expected to be true
+
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
