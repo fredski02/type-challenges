@@ -21,7 +21,12 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Fibonacci<T extends number> = any
+type Fibonacci<T extends number, Index extends number[] = [1], Prev extends number[] = [], Curr extends number[] = [1]> =
+  Index['length'] extends T
+    ? Curr['length']
+    : Fibonacci<T, [...Index, 1], Curr, [...Prev, ...Curr]>
+
+type C = Fibonacci<2>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
@@ -30,6 +35,7 @@ type cases = [
   Expect<Equal<Fibonacci<1>, 1>>,
   Expect<Equal<Fibonacci<2>, 1>>,
   Expect<Equal<Fibonacci<3>, 2>>,
+  Expect<Equal<Fibonacci<4>, 3>>,
   Expect<Equal<Fibonacci<8>, 21>>,
 ]
 
