@@ -23,7 +23,13 @@
 
 /* _____________ Your Code Here _____________ */
 
-type ObjectEntries<T> = any
+// type ObjectEntries<T> = {
+//   [Prop in keyof T as Array<Prop, T[Prop]>]: never
+// }
+
+type ObjectEntries<T> = {
+  [Prop in keyof T as number]: [Prop, T[Prop] extends undefined ? undefined : Required<T>[Prop]]
+} [0]
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
@@ -34,7 +40,13 @@ interface Model {
   locations: string[] | null
 }
 
-type ModelEntries = ['name', string] | ['age', number] | ['locations', string[] | null]
+type Z = ObjectEntries<Partial<Model>>
+type Y = ObjectEntries<{ key?: undefined }>
+
+type ModelEntries =
+  | ['name', string]
+  | ['age', number]
+  | ['locations', string[] | null]
 
 type cases = [
   Expect<Equal<ObjectEntries<Model>, ModelEntries>>,
