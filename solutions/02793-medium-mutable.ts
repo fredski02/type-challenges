@@ -25,7 +25,9 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Mutable<T> = any
+type Mutable<T> = {
+  -readonly[Prop in keyof T]: T[Prop]
+}
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
@@ -40,6 +42,9 @@ interface Todo1 {
 }
 
 type List = [1, 2, 3]
+
+type A = Readonly<Todo1>
+type B = Mutable<A>
 
 type cases = [
   Expect<Equal<Mutable<Readonly<Todo1>>, Todo1>>,
