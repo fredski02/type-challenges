@@ -23,7 +23,9 @@
 
 /* _____________ Your Code Here _____________ */
 
-type OmitByType<T, U> = any
+type OmitByType<T, U> = {
+  [Prop in keyof T as T[Prop] extends U ? never : Prop]: T[Prop]
+}
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
@@ -34,6 +36,8 @@ interface Model {
   isReadonly: boolean
   isEnable: boolean
 }
+
+type B = OmitByType<Model, boolean>
 
 type cases = [
   Expect<Equal<OmitByType<Model, boolean>, { name: string; count: number }>>,
