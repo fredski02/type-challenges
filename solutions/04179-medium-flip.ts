@@ -20,7 +20,11 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Flip<T> = any
+type Flip<T extends Record<string, string | number | boolean>> = {
+  [Prop in keyof T as `${T[Prop]}` ]: Prop
+}
+
+type A = Flip<{ 3.14: 'pi'; true: 'bool' }>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect, NotEqual } from '@type-challenges/utils'
