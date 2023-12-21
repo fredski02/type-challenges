@@ -19,7 +19,11 @@
 
 /* _____________ Your Code Here _____________ */
 
-type AllCombinations<S> = any
+type AllCombinations<S extends string, Prefix extends string = ''> = S extends `${infer First}${infer Rest}`
+  ? | `${First}${AllCombinations<`${Prefix}${Rest}`>}` | AllCombinations<Rest, `${Prefix}${First}`>
+  : ''
+
+type C = AllCombinations<'ABC'>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
