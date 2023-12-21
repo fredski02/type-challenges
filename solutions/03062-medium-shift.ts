@@ -18,7 +18,9 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Shift<T> = any
+type Shift<T extends Array<any>> = T extends [any, ...infer Rest] ? Rest : T
+
+type A = Shift<[3, 2, 1]>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
