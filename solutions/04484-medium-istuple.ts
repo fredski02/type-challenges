@@ -20,7 +20,16 @@
 
 /* _____________ Your Code Here _____________ */
 
-type IsTuple<T> = any
+type Arr = Array<'hello' | 'goodbye'>['length']
+type Tupe = [1, 2]['length']
+
+type IsTuple<T> = [T] extends [never]
+  ? false
+  : T extends readonly any[]
+    ? number extends T['length']
+      ? false
+      : true
+    : false
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
