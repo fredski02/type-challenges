@@ -15,7 +15,38 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Zip<T, U> = any
+// type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+//   k: infer I
+// ) => void
+//   ? I
+//   : never
+
+// // Converts union to overloaded function
+// type UnionToOvlds<U> = UnionToIntersection<
+//   U extends any ? (f: U) => void : never
+// >
+
+// type PopUnion<U> = UnionToOvlds<U> extends (a: infer A) => void ? A : never
+
+// type IsUnion<T> = [T] extends [UnionToIntersection<T>] ? false : true
+
+// // Finally me)
+// type UnionToArray<T, A extends unknown[] = []> = IsUnion<T> extends true
+//   ? UnionToArray<Exclude<T, PopUnion<T>>, [PopUnion<T>, ...A]>
+//   : [T, ...A]
+
+// type Zip<T extends any[], U extends any[], Arr extends Array<any> = []> = T | U extends [infer First, ...infer Rest]
+//   ? Zip<Rest, Rest, [...Arr, UnionToArray<First>]>
+//   : Arr
+
+// type B = UnionToArray<1 | 2>
+
+// second approach
+type Zip<A extends any[], B extends any[], Return extends any[] = []> = Return['length'] extends A['length'] | B['length']
+  ? Return
+  : Zip<A, B, [...Return, [A[Return['length']], B[Return['length']]]]>
+
+type A = Zip<[1, 2], [true, false]>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
