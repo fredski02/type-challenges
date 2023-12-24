@@ -20,9 +20,9 @@
 /* _____________ Your Code Here _____________ */
 
 type Chunk<T extends Array<any>, N extends number, CurrChunk extends any[] = [], Return extends any[] = []> = T extends [infer First, ...infer Rest]
-  ? CurrChunk['length'] extends N // does the current chunk length equal the chunk size
-    ? Chunk<[First, ...Rest], N, [], [...Return, CurrChunk]> // it does so put first back at the start, start a blank chunk and exten the return chunk
-    : Chunk<Rest, N, [...CurrChunk, First], Return> // it doesn't so add to the current chunk
+  ? CurrChunk['length'] extends N
+    ? Chunk<[First, ...Rest], N, [], [...Return, CurrChunk]>
+    : Chunk<Rest, N, [...CurrChunk, First], Return>
   : CurrChunk['length'] extends 0
     ? [...Return]
     : [...Return, CurrChunk]
