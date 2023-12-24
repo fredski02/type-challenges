@@ -18,7 +18,17 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Without<T, U> = any
+type AsUnion<T> = T extends any[] ? T[number] : T
+type X = AsUnion<'a' | 'b' | 'c'>
+
+type Without<T, U> =
+  T extends [infer First, ...infer Rest]
+    ? First extends AsUnion<U>
+      ? Without<Rest, U>
+      : [First, ...Without<Rest, U>]
+    : T
+
+type Res = Without<[1, 2], 1> // expected [2]
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
