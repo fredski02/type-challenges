@@ -18,8 +18,16 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Trunc = any
+// conver to string
+// extend template string and infer all before the dot and return
 
+type Trunc<F extends number | string> = `${F}` extends `${infer First}.${infer _}`
+  ? First extends ''
+    ? '0'
+    : First
+  : `${F}`
+
+type A = Trunc<'.3'>
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
