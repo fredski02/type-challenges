@@ -19,12 +19,27 @@
 
 /* _____________ Your Code Here _____________ */
 
+// fill a given tuple T
+// with the given value N
+// start at Start ( inclusive ) - defualt is 0
+// end at End ( inclusive ) - defualt is the length of T
+
 type Fill<
   T extends unknown[],
   N,
   Start extends number = 0,
   End extends number = T['length'],
-> = any
+  Count extends any[] = [],
+  isStart extends boolean = Count['length'] extends Start ? true : false,
+> = Count['length'] extends End // reached end ?
+  ? T // return
+  : T extends [infer First, ...infer Rest] // get the first and rest
+    ? isStart extends false // not in fill range
+      ? [First, ...Fill<Rest, N, Start, End, [1, ...Count]>] // keep original element ( range starts at an index higher than 0 )
+      : [N, ...Fill<Rest, N, Start, End, [1, ...Count], isStart>] // replace and cursive carry on ( range starts at 0 )
+    : T
+
+type A = Fill<[1, 2, 3], true>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
