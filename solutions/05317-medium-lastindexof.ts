@@ -17,10 +17,25 @@
   > View on GitHub: https://tsch.js.org/5317
 */
 
+// type StringCast = string | number | bigint | undefined | null | boolean
+
+// type IndexOf<T extends any[], U, Pass extends any[] = []> =
+//   T extends [infer F, ...infer Rest]
+//     ? Equal<F, U> extends true
+//       ? Pass['length']
+//       : IndexOf<Rest, U, [...Pass, F]>
+//     : -1
+
 /* _____________ Your Code Here _____________ */
 
-type LastIndexOf<T, U> = any
+type LastIndexOf<T extends any[], U, TLen = T extends [...infer TEelements, infer _] ? [...TEelements]['length'] : -1> =
+  T extends [...infer Rest, infer Last]
+    ? Equal<Last, U> extends true
+      ? TLen
+      : LastIndexOf<Rest, U>
+    : -1
 
+type A = LastIndexOf<[1, 2, 3, 2, 1], 2>
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
