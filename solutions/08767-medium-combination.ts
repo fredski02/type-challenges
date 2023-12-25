@@ -18,7 +18,12 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Combination<T extends string[]> = any
+type Combination<T extends string[], Union = T[number], Single = Union> =
+  Single extends string
+    ? Single | `${Single} ${Combination<[], Exclude<Union, Single>>}`
+    : never
+
+type A = Combination<['foo', 'bar']>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
