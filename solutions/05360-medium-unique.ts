@@ -20,7 +20,12 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Unique<T> = any
+type Unique<T, U = never> =
+  T extends [infer First, ...infer Rest]
+    ? true extends (U extends U ? Equal<U, [First]> : never)
+      ? Unique<Rest, U>
+      : [First, ...Unique<Rest, U | [First]>]
+    : []
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
