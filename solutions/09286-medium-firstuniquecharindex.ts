@@ -12,8 +12,30 @@
 
 /* _____________ Your Code Here _____________ */
 
-type FirstUniqueCharIndex<T extends string> = any
+// type CheckRepeatedChars<T extends string> = T extends `${infer First}${infer Rest}`
+//   ? Rest extends `${string}${First}${string}`
+//     ? true
+//     : CheckRepeatedChars<Rest>
+//   : false
 
+// type FirstUniqueCharIndex<T extends string, Count extends number[] = []> = T extends `${infer First}${infer Next}`
+//   ? Next extends `${string}${First}${string}`
+//     ? FirstUniqueCharIndex<Next, [...Count, 1]>
+//     : Count['length']
+//   : Count['length']
+
+type FirstUniqueCharIndex<
+  T extends string,
+  U extends string[] = [],
+> = T extends `${infer F}${infer R}`
+  ? F extends U[number]
+    ? FirstUniqueCharIndex<R, [...U, F]>
+    : R extends `${string}${F}${string}`
+      ? FirstUniqueCharIndex<R, [...U, F]>
+      : U['length']
+  : -1
+
+type A = FirstUniqueCharIndex<'aabb'>
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
