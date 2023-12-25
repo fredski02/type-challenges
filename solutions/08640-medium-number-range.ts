@@ -16,7 +16,15 @@
 
 /* _____________ Your Code Here _____________ */
 
-type NumberRange<L, H> = any
+type NumberRange<
+  L extends number,
+  H extends number,
+  Index extends 1[] = L extends 0 ? [] : [1, 1],
+  Return = never,
+> =
+  Index['length'] extends H
+    ? H | Return
+    : NumberRange<L, H, [...Index, 1], Index['length'] | Return>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
