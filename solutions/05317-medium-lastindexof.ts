@@ -28,10 +28,10 @@
 
 /* _____________ Your Code Here _____________ */
 
-type LastIndexOf<T extends any[], U, TLen = T extends [...infer TEelements, infer _] ? [...TEelements]['length'] : -1> =
+type LastIndexOf<T extends any[], U> =
   T extends [...infer Rest, infer Last]
     ? Equal<Last, U> extends true
-      ? TLen
+      ? T extends [...infer TEelements, infer _] ? [...TEelements]['length'] : -1
       : LastIndexOf<Rest, U>
     : -1
 
