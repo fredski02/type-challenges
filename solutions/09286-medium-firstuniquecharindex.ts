@@ -24,15 +24,12 @@
 //     : Count['length']
 //   : Count['length']
 
-type FirstUniqueCharIndex<
-  T extends string,
-  U extends string[] = [],
-> = T extends `${infer F}${infer R}`
-  ? F extends U[number]
-    ? FirstUniqueCharIndex<R, [...U, F]>
-    : R extends `${string}${F}${string}`
-      ? FirstUniqueCharIndex<R, [...U, F]>
-      : U['length']
+type FirstUniqueCharIndex<T extends string, Collection extends string[] = []> = T extends `${infer First}${infer Rest}`
+  ? First extends Collection[number] // I
+    ? FirstUniqueCharIndex<Rest, [...Collection, First]>
+    : Rest extends `${string}${First}${string}`
+      ? FirstUniqueCharIndex<Rest, [...Collection, First]>
+      : Collection['length']
   : -1
 
 type A = FirstUniqueCharIndex<'aabb'>
