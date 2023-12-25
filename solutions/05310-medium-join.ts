@@ -19,7 +19,16 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Join<T, U> = any
+type ArrayToUnion<T> = T extends any[] ? T[number] : T
+
+type A = ArrayToUnion<['a', 'p', 'p']>
+
+type Join<T extends string[], U extends string | number, Return extends string = ''> =
+  T extends [infer First extends string, ...infer Rest extends string[]]
+    ? Join<Rest, U, `${Return}${Return extends '' ? '' : U}${First}`>
+    : Return
+
+type B = Join<['a', 'p', 'p', 'l', 'e'], '-'>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

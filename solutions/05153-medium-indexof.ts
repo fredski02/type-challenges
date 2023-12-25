@@ -18,8 +18,17 @@
 
 /* _____________ Your Code Here _____________ */
 
-type IndexOf<T, U> = any
+type StringCast = string | number | bigint | undefined | null | boolean
 
+type IndexOf<T extends any[], U, Pass extends any[] = []> =
+  T extends [infer F, ...infer Rest]
+    ? Equal<F, U> extends true
+      ? Pass['length']
+      : IndexOf<Rest, U, [...Pass, F]>
+    : -1
+
+  type Res = IndexOf<[string, 1, number, 'a', any], any>
+  type Res2 = IndexOf<[string, 'a'], 'a'>
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
