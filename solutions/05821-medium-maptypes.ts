@@ -39,7 +39,14 @@
 
 /* _____________ Your Code Here _____________ */
 
-type MapTypes<T, R> = any
+type MapTypes<T, R extends { mapFrom: any; mapTo: any }> = {
+  [Key in keyof T]: T[Key] extends R['mapFrom']
+    ? R extends { mapFrom: T[Key] }
+      ? R['mapTo']
+      : never
+    : T[Key]
+}
+// should be { stringToNumber: number; skipParsingMe: boolean }
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
