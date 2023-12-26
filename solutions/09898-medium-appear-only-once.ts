@@ -10,9 +10,25 @@
   > View on GitHub: https://tsch.js.org/9898
 */
 
+// take the first
+// does it live in T
+// if it does, add to duplicates and
+
 /* _____________ Your Code Here _____________ */
 
-type FindEles<T extends any[]> = any
+type FindEles<T extends any[], Duplicates = never> = T extends [infer First, ...infer Rest]
+  ? First extends Duplicates
+    ? FindEles<Rest, Duplicates>
+    : First extends Rest[number]
+      ? FindEles<Rest, Duplicates | First>
+      : [First, ...FindEles<Rest, Duplicates>]
+  : []
+
+type A = FindEles<[1, 2, 2, 3, 3, 4, 5, 6, 6, 6]>
+type C = Exclude<[1, 2, 3][number], [3][number]>
+
+type E<T extends Array<any>> = 4 extends T[number] ? true : false
+type D = E<[1, 2]>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
