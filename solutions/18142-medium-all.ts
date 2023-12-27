@@ -22,7 +22,15 @@
 
 /* _____________ Your Code Here _____________ */
 
-type All = any
+type IsEqual<T, U> = (<G>() => G extends T ? 1 : 2) extends (<G>() => G extends U ? 1 : 2)
+  ? true
+  : false
+
+type All<T extends any[], U> = T extends [infer L, ...infer R]
+  ? IsEqual<L, U> extends true
+    ? All<R, U>
+    : false
+  : true
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
