@@ -16,8 +16,12 @@
 type ModifierKeys = ['cmd', 'ctrl', 'opt', 'fn']
 
 // 实现 Combs
-type Combs = any
 
+type Combs<T extends string[] = ModifierKeys> = T extends [infer First extends string, ...infer Rest extends string[]]
+  ? `${First} ${Rest[number]}` | Combs<Rest>
+  : never
+
+type A = Combs
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
