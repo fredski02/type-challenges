@@ -12,7 +12,11 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Filter<T extends any[], P> = []
+type Filter<T extends any[], P, Return extends Array<any> = []> = T extends [infer First, ...infer Rest extends Array<any>]
+  ? First extends P ? Filter<Rest, P, [...Return, First]> : Filter<Rest, P, Return>
+  : Return
+
+type A = Filter<[0, 1, 2], 2>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
